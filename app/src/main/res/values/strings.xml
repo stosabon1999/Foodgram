@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Foodgram</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="login">Войти</string>
+    <string name="create_account">Еще не зарегистрированы?</string>
+    <string name="name_surname">Имя и фамилия</string>
+    <string name="login_text">Логин</string>
+    <string name="password_text">Пароль</string>
+    <string name="again_text">Еще раз</string>
+    <string name="sign_up_text">Регистрация</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="default_title">Default title</string>
+    <string name="default_subtitle">Default content</string>
+    <string name="action_share">ПОДЕЛИТЬСЯ</string>
+    <string name="action_commend">КОММЕНТАРИИ</string>
+</resources>
