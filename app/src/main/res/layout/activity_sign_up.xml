@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.production.ssobolevsky.foodgram.SignUpActivity"
+    tools:context="ru.production.ssobolevsky.foodgram.activities.SignUpActivity"
     android:orientation="vertical">
 
     <EditText

@@ -6,5 +6,11 @@
     <dimen name="iv_card_height">160dp</dimen>
     <dimen name="standard_tv_padding">16dp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="civ_size">96dp</dimen>
+    <dimen name="delimeter_height">6dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="standard_elevation">4dp</dimen>
+    <dimen name="height_32dp">32dp</dimen>
     <dimen name="big_text_size">18sp</dimen>
 </resources>

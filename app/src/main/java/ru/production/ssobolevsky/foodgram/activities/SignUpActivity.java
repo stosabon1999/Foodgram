@@ -1,4 +1,4 @@
-package ru.production.ssobolevsky.foodgram;
+package ru.production.ssobolevsky.foodgram.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+
+import ru.production.ssobolevsky.foodgram.R;
+import ru.production.ssobolevsky.foodgram.models.User;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -58,7 +63,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void createAccount(final String email, String password, final String name) {
         Log.d(LoginActivity.TAG, "create account:" + email);
-        // TODO (1) validate email and password
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -67,7 +71,9 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(LoginActivity.TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            createUser(user.getUid(), email, name);
+                            createUser(email, name, user.getUid());
+                            setResult(RESULT_OK);
+                            finish();
 
                         } else {
                             Log.w(LoginActivity.TAG, "createUserWithEmail:failure", task.getException());
@@ -77,8 +83,14 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void createUser(String userId, String email, String name) {
-        User user = new User(email, name);
+    /**
+     * Push data of user to database.
+     * @param userId - id of user.
+     * @param email - email of user.
+     * @param name - name of user.
+     */
+    private void createUser(String email, String name, String userId) {
+        User user = new User(email, name, userId, new HashMap<String, Boolean>());
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("users").child(userId).setValue(user);
     }
@@ -87,7 +99,11 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            createAccount(mLoginEditText.getText().toString(), mPasswordEditText.getText().toString(), mNameEditText.getText().toString());
+            if (mPasswordEditText.getText().toString().equals(mConfirmPasswordEditText.getText().toString())) {
+                createAccount(mLoginEditText.getText().toString(), mPasswordEditText.getText().toString(), mNameEditText.getText().toString());
+            } else {
+                Toast.makeText(SignUpActivity.this, "Введенные пароли не совпадают", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

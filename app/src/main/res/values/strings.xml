@@ -28,4 +28,17 @@
     <string name="default_subtitle">Default content</string>
     <string name="action_share">ПОДЕЛИТЬСЯ</string>
     <string name="action_commend">КОММЕНТАРИИ</string>
+    <string name="name">Имя</string>
+    <string name="action_exit">Выход</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">Профиль</string>
+    <string name="recipes">Рецепты</string>
+    <string name="search">Поиск</string>
+    <string name="messages">Сообщения</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="add_friend">Добавить в друзья</string>
+    <string name="cancel_request">Отменить заявку</string>
+    <string name="send_message">Написать сообщение</string>
+    <string name="accept_request">Принять заявку</string>
 </resources>

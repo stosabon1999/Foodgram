@@ -1,5 +1,6 @@
-package ru.production.ssobolevsky.foodgram;
+package ru.production.ssobolevsky.foodgram.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,36 +17,32 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import ru.production.ssobolevsky.foodgram.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String TAG = "LoginAndRegister";
+    public static final String TAG = "LoginActivityTag";
+    public static final int REQUEST_CODE_REGISTER = 1001;
 
     private FirebaseAuth mAuth;
-
     private ImageView mLogo;
-
     private EditText mEmailEditText;
-
     private EditText mPasswordEditText;
-
     private Button mLoginButton;
-
     private TextView mCreateAccountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        mAuth = FirebaseAuth.getInstance();
         init();
         initListeners();
     }
 
 
     private void init() {
+        mAuth = FirebaseAuth.getInstance();
         mLogo = findViewById(R.id.iv_logo);
         mEmailEditText = findViewById(R.id.et_email);
         mPasswordEditText = findViewById(R.id.et_password);
@@ -58,48 +55,50 @@ public class LoginActivity extends AppCompatActivity {
         mCreateAccountTextView.setOnClickListener(new RegisterButtonClickListener());
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }
-
 
     private void signIn(String email, String password) {
-        // TODO (2) validate email and password
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
+                            startActivity(MainActivity.newIntent(LoginActivity.this, mAuth.getCurrentUser().getUid()));
+                            finish();
                         } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
                     }
                 });
     }
 
     private class LoginButtonClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View view) {
             signIn(mEmailEditText.getText().toString(), mPasswordEditText.getText().toString());
-            startActivity(MainActivity.newIntent(LoginActivity.this));
         }
     }
 
     private class RegisterButtonClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View view) {
-            startActivity(SignUpActivity.newIntent(LoginActivity.this));
+            startActivityForResult(SignUpActivity.newIntent(LoginActivity.this), REQUEST_CODE_REGISTER);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_REGISTER && resultCode == RESULT_OK) {
+            startActivity(MainActivity.newIntent(LoginActivity.this, mAuth.getCurrentUser().getUid()));
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public static Intent newInstance(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        return intent;
     }
 }

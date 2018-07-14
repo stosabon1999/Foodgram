@@ -3,33 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.production.ssobolevsky.foodgram.activities.MainActivity"
+    tools:context="ru.production.ssobolevsky.foodgram.activities.FriendsActivity"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_friends"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorGray300">
-
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/fl_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_friends"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </FrameLayout>
+        android:layout_height="wrap_content">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        app:menu="@menu/navigation"/>
-
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>
