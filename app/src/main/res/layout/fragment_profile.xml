@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_8dp">
+
+        <ImageButton
+            android:id="@+id/cib_user_avatar"
+            android:layout_width="@dimen/civ_size"
+            android:layout_height="@dimen/civ_size"
+            android:src="@drawable/ic_launcher_foreground"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cib_user_avatar"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/cib_friends"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_32dp"
+            android:src="@drawable/ic_people_black_24dp"
+            android:layout_marginStart="@dimen/padding_16dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_toEndOf="@id/cib_user_avatar"
+            android:background="@null"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/cib_user_avatar"
+            android:layout_below="@id/cib_friends"
+            android:layout_marginStart="@dimen/padding_16dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp">
+
+            <Button
+                android:id="@+id/btn_edit_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_profile"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/btn_add_friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_friend"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btn_cancel_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_request"
+                android:visibility="gone"/>
+            <Button
+                android:id="@+id/btn_send_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send_message"
+                android:visibility="gone"/>
+            <Button
+                android:id="@+id/btn_accept_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/accept_request"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/delimeter_height"
+        android:background="@color/gray"/>
+</LinearLayout>
