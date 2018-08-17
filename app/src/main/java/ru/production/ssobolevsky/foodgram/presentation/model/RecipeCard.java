@@ -8,24 +8,24 @@ import android.widget.ImageView;
 
 public class RecipeCard {
 
-    private ImageView mScreen;
+    private String mUrl;
 
     private String mTitle;
 
     private String mSubtitle;
 
-    public RecipeCard(ImageView screen, String title, String subtitle) {
-        mScreen = screen;
+    public RecipeCard(String url, String title, String subtitle) {
+        mUrl = url;
         mTitle = title;
         mSubtitle = subtitle;
     }
 
-    public ImageView getScreen() {
-        return mScreen;
+    public String getUrl() {
+        return mUrl;
     }
 
-    public void setScreen(ImageView screen) {
-        mScreen = screen;
+    public void setUrl(String url) {
+        mUrl = url;
     }
 
     public String getTitle() {
