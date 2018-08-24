@@ -6,6 +6,9 @@ package ru.production.ssobolevsky.foodgram.presentation.presenters.base;
  */
 public class BasePresenter<T> implements Presenter<T> {
 
+    /**
+     * Instance of current view.
+     */
     private T mMvpView;
 
     @Override

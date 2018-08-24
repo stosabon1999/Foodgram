@@ -13,4 +13,6 @@
     <dimen name="standard_elevation">4dp</dimen>
     <dimen name="height_32dp">32dp</dimen>
     <dimen name="big_text_size">18sp</dimen>
+    <dimen name="text_size_24sp">24sp</dimen>
+    <dimen name="chat_photo_size">64dp</dimen>
 </resources>

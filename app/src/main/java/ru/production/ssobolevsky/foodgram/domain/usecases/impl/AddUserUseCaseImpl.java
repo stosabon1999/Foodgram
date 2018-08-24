@@ -1,5 +1,6 @@
 package ru.production.ssobolevsky.foodgram.domain.usecases.impl;
 
+import io.reactivex.Single;
 import ru.production.ssobolevsky.foodgram.domain.repositories.AddUserRepository;
 import ru.production.ssobolevsky.foodgram.domain.usecases.AddUserUseCase;
 
@@ -10,39 +11,28 @@ import ru.production.ssobolevsky.foodgram.domain.usecases.AddUserUseCase;
 public class AddUserUseCaseImpl implements AddUserUseCase {
 
     private AddUserRepository mAddUserRepository;
-    private AddUserUseCase.Callback mCallback;
 
     public AddUserUseCaseImpl(AddUserRepository addUserRepository) {
         mAddUserRepository = addUserRepository;
     }
 
-    private AddUserRepository.Callback mRepositoryCallback = new AddUserRepository.Callback() {
-        @Override
-        public void onRequestUpdated(int action) {
-            mCallback.onRequestUpdated(action);
-        }
-
-        @Override
-        public void onError() {
-
-        }
-    };
-
     @Override
-    public void addUser(AddUserUseCase.Callback callback, String uid) {
-        mCallback = callback;
-        mAddUserRepository.addUser(mRepositoryCallback, uid);
+    public Single<Integer> addUser(String uid) {
+        return mAddUserRepository.addUser(uid);
     }
 
     @Override
-    public void cancelRequest(AddUserUseCase.Callback callback, String uid) {
-        mCallback = callback;
-        mAddUserRepository.cancelRequest(mRepositoryCallback, uid);
+    public Single<Integer> cancelRequest(String uid) {
+        return mAddUserRepository.cancelRequest(uid);
     }
 
     @Override
-    public void acceptRequest(AddUserUseCase.Callback callback, String uid) {
-        mCallback = callback;
-        mAddUserRepository.acceptRequest(mRepositoryCallback, uid);
+    public Single<Integer> acceptRequest(String uid) {
+        return mAddUserRepository.acceptRequest(uid);
+    }
+
+    @Override
+    public Single<Integer> deleteFriend(String uid) {
+        return mAddUserRepository.deleteFriend(uid);
     }
 }

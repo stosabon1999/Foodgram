@@ -1,26 +1,21 @@
-package ru.production.ssobolevsky.foodgram.data.models;
+package ru.production.ssobolevsky.foodgram.domain.models;
 
-import java.util.Objects;
-
-public class MessageEntity {
+public class Message {
 
     private String message;
     private String uid;
-    private long timestamp;
+    private String time;
     private String senderUid;
     private String receiverUid;
-    private String messageUid;
+    private long timestamp;
 
-    public MessageEntity() {
-    }
-
-    public MessageEntity(String message, String uid, long timestamp, String senderUid, String receiverUid, String messageUid) {
+    public Message(String message, String uid, String time, String senderUid, String receiverUid, long timestamp) {
         this.message = message;
         this.uid = uid;
-        this.timestamp = timestamp;
+        this.time = time;
         this.senderUid = senderUid;
         this.receiverUid = receiverUid;
-        this.messageUid = messageUid;
+        this.timestamp = timestamp;
     }
 
     public String getSenderUid() {
@@ -47,12 +42,12 @@ public class MessageEntity {
         this.uid = uid;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public String getTime() {
+        return time;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getReceiverUid() {
@@ -63,12 +58,11 @@ public class MessageEntity {
         this.receiverUid = receiverUid;
     }
 
-    public String getMessageUid() {
-        return messageUid;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setMessageUid(String messageUid) {
-        this.messageUid = messageUid;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
-
 }

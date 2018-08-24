@@ -11,18 +11,11 @@ import ru.production.ssobolevsky.foodgram.domain.models.User;
  */
 
 public class UserEntityDataMapper {
-
-    public User transform(UserEntity userEntity) {
-        User user = null;
-        if (userEntity != null) {
-            user = new User(userEntity.getEmail(),
-                    userEntity.getName(),
-                    userEntity.getUid(),
-                    userEntity.getContacts());
-        }
-        return user;
-    }
-
+    /**
+     * Transform list of user entities from db to list of users.
+     * @param userEntities - list of user entities.
+     * @return list of users
+     */
     public List<User> transformUsers(List<UserEntity> userEntities) {
         List<User> users = new ArrayList<>();
         for (UserEntity userEntity : userEntities) {
@@ -35,8 +28,6 @@ public class UserEntityDataMapper {
             }
             users.add(user);
         }
-
         return users;
     }
-
 }

@@ -1,4 +1,4 @@
-package ru.production.ssobolevsky.foodgram;
+package ru.production.ssobolevsky.foodgram.presentation.model;
 
 import android.widget.ImageView;
 

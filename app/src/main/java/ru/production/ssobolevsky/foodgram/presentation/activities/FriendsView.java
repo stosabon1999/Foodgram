@@ -9,7 +9,16 @@ import ru.production.ssobolevsky.foodgram.domain.models.User;
  */
 
 public interface FriendsView {
+    /**
+     * Method to show friends or founded users in recycler view of friends.
+     * @param users - list of users.
+     */
+    void showFriends(List<User> users);
 
-    void showFoundedUsers(List<User> users);
+    void showProgress();
+
+    void hideProgress();
+
+    void showEmptyFriendsText();
 
 }

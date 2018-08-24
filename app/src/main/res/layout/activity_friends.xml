@@ -12,8 +12,16 @@
         android:id="@+id/toolbar_friends"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorGray300">
+        android:background="?attr/colorPrimary"
+        app:title="@string/friends">
     </android.support.v7.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/pb_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_friends"
@@ -21,4 +29,13 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_friends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_friends"
+        android:layout_marginTop="@dimen/padding_16dp"
+        android:gravity="center"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -8,7 +8,7 @@ import ru.production.ssobolevsky.foodgram.data.models.ChatEntity;
 import ru.production.ssobolevsky.foodgram.data.models.MessageEntity;
 import ru.production.ssobolevsky.foodgram.domain.models.Message;
 
-public interface DialogRepository {
+public interface ChatRepository {
     /**
      * Send message to user by user id.
      * @param message - new message.
@@ -28,15 +28,17 @@ public interface DialogRepository {
     Single<List<ChatEntity>> getChats();
 
     /**
-     * Get chat with user by user uid.
+     * Get chat with user by user uid. If user scrolled to the top then add next messages after timestamp.
      * @param userUid - uid of selected user.
+     * @param lastItem - timestamp of top message.
      * @return list of messages between current user and selected user.
      */
-    Single<List<Message>> getDialogByUserId(String userUid);
+    Single<List<Message>> getDialogByUserId(String userUid, Long lastItem);
     /**
-     * Get chat with user by chat uid.
-     * @param chatUid - uid of chat.
+     * Get chat with user by chat uid. If user scrolled to the top then add next messages after timestamp.
+     * @param chatUid - uid of selected chat.
+     * @param lastItem - timestamp of top message.
      * @return list of messages between current user and selected user.
      */
-    Single<List<Message>> getDialogByChatId(String chatUid);
+    Single<List<Message>> getDialogByChatId(String chatUid, Long lastItem);
 }

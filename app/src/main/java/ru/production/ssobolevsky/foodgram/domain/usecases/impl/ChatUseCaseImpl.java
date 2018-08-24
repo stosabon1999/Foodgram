@@ -7,13 +7,13 @@ import ru.production.ssobolevsky.foodgram.data.mapper.ChatEntityDataMapper;
 import ru.production.ssobolevsky.foodgram.domain.models.Chat;
 import ru.production.ssobolevsky.foodgram.domain.models.Message;
 import ru.production.ssobolevsky.foodgram.domain.repositories.ChatRepository;
-import ru.production.ssobolevsky.foodgram.domain.usecases.DialogUseCase;
+import ru.production.ssobolevsky.foodgram.domain.usecases.ChatUseCase;
 
-public class DialogUseCaseImpl implements DialogUseCase {
+public class ChatUseCaseImpl implements ChatUseCase {
 
     private ChatRepository mChatRepository;
 
-    public DialogUseCaseImpl(ChatRepository chatRepository) {
+    public ChatUseCaseImpl(ChatRepository chatRepository) {
         mChatRepository = chatRepository;
     }
 
@@ -34,12 +34,12 @@ public class DialogUseCaseImpl implements DialogUseCase {
     }
 
     @Override
-    public Single<List<Message>> getDialogByUserId(String userUid) {
-        return mChatRepository.getDialogByUserId(userUid);
+    public Single<List<Message>> getDialogByUserId(String userUid, Long lastItem) {
+        return mChatRepository.getDialogByUserId(userUid, lastItem);
     }
 
     @Override
-    public Single<List<Message>> getDialogByChatId(String chatUid) {
-       return mChatRepository.getDialogByChatId(chatUid);
+    public Single<List<Message>> getDialogByChatId(String chatUid, Long lastItem) {
+       return mChatRepository.getDialogByChatId(chatUid, lastItem);
     }
 }

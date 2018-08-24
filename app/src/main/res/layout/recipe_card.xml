@@ -1,57 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card="http://schemas.android.com/apk/res-auto"
                                     android:id="@+id/cv_recipe"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-    
-    <LinearLayout
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/margin_8dp"
+                                    android:layout_marginRight="@dimen/margin_8dp"
+                                    android:layout_marginTop="@dimen/margin_8dp"
+                                    card:cardElevation="4dp"
+                                    card:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
+        android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/iv_recipe_screen"
             android:layout_width="match_parent"
             android:layout_height="@dimen/iv_card_height"
-            android:scaleType="centerCrop"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/standard_tv_padding"
-        android:orientation="vertical">
+            android:scaleType="centerCrop"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
 
         <TextView
+            android:padding="@dimen/padding_16dp"
             android:id="@+id/tv_title_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/default_title"
-            android:layout_marginBottom="@dimen/margin_8dp"
-            android:textSize="@dimen/big_text_size"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_24sp"
+            android:layout_alignBottom="@id/iv_recipe_screen"/>
 
         <TextView
+            android:padding="@dimen/padding_16dp"
             android:id="@+id/tv_subtitle_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/default_subtitle"/>
+            android:text="@string/default_subtitle"
+            android:layout_below="@id/iv_recipe_screen"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
         <Button
-            android:id="@+id/b_sshare_recipe"
+            android:id="@+id/b_share_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_share"/>
+            android:text="@string/action_share"
+            android:layout_below="@id/tv_subtitle_recipe"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/padding_16dp"/>
         <Button
             android:id="@+id/b_commend_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_commend"/>
-    </LinearLayout>
+            android:text="@string/action_commend"
+            android:layout_below="@id/tv_subtitle_recipe"
+            android:layout_toEndOf="@id/b_share_recipe"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/padding_16dp"/>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>

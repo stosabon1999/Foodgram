@@ -20,12 +20,13 @@ import ru.production.ssobolevsky.foodgram.presentation.activities.MainActivity;
  */
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.UsersViewHolder> {
+    /**
+     * List of friends of selected user.
+     */
+    private List<User> mData;
 
-    private List<User> mData = new ArrayList<>();
-    private Context mContext;
-
-    public FriendsAdapter(Context context) {
-        this.mContext = context;
+    public FriendsAdapter() {
+        mData = new ArrayList<>();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.UsersVie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(MainActivity.newIntent(mContext, user.getUid()));
+                holder.itemView.getContext().startActivity(MainActivity.newIntent(holder.itemView.getContext(), user.getUid()));
             }
         });
     }
@@ -53,7 +54,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.UsersVie
     }
 
     class UsersViewHolder extends RecyclerView.ViewHolder {
-
+        /**
+         * Name of friend.
+         */
         private TextView mUserName;
 
         public UsersViewHolder(View itemView) {

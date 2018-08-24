@@ -33,7 +33,6 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile">Профиль</string>
-    <string name="recipes">Рецепты</string>
     <string name="search">Поиск</string>
     <string name="messages">Сообщения</string>
     <string name="edit_profile">Редактировать профиль</string>
@@ -41,4 +40,20 @@
     <string name="cancel_request">Отменить заявку</string>
     <string name="send_message">Написать сообщение</string>
     <string name="accept_request">Принять заявку</string>
+    <string name="type_message">Введите сообщение</string>
+    <string name="chats">Диалоги</string>
+    <string name="recipes">Рецепты</string>
+    <string name="my_friends">Мои друзья</string>
+    <string name="delete_friend">Удалить из друзей</string>
+    <string name="no_recipes">Вы еще не поделились рецептами</string>
+    <string name="friends">Друзья</string>
+    <string name="no_friends">У вас пока нет друзей</string>
+    <string name="no_dialogs">У вас еще нет диалогов</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="photo">Фото</string>
+    <string name="open_photo">Открыть фото</string>
+    <string name="edit_photo">Сменить фото</string>
+    <string name="friends_size"> друзей</string>
+    <string name="zero_friends">0 друзей</string>
 </resources>

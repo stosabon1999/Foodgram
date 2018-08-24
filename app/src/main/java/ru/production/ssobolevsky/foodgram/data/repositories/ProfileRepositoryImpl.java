@@ -1,5 +1,9 @@
 package ru.production.ssobolevsky.foodgram.data.repositories;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -14,6 +18,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import io.reactivex.Single;
 import ru.production.ssobolevsky.foodgram.data.datasources.MyFirebaseData;
 import ru.production.ssobolevsky.foodgram.data.mapper.UserEntityDataMapper;
 import ru.production.ssobolevsky.foodgram.data.models.UserEntity;
@@ -31,43 +40,51 @@ public class ProfileRepositoryImpl implements ProfileRepository {
     public ProfileRepositoryImpl(UserEntityDataMapper userEntityDataMapper) {
         mUserEntityDataMapper = userEntityDataMapper;
     }
-
+    /**
+     * Get full user data by user uid from database.
+     * @param uid - uid of selected user.
+     * @return list of two users.(current and selected)
+     */
     @Override
-    public void getUserProfileData(final ProfileRepository.CallBack callback, final String uid) {
-        MyFirebaseData.getFirebaseDatabaseReference()
+    public Single<List<User>> getUserProfileData(final String uid) {
+        return Single.create(emitter -> MyFirebaseData.getFirebaseDatabaseReference()
                 .child(MyFirebaseData.USERS_TABLE)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         UserEntity currentUser = dataSnapshot.child(MyFirebaseData.getFirebaseUserUid()).getValue(UserEntity.class);
                         UserEntity selectedUser = dataSnapshot.child(uid).getValue(UserEntity.class);
-                        callback.onUserDataLoaded(mUserEntityDataMapper.transform(currentUser), mUserEntityDataMapper.transform(selectedUser));
+                        List<UserEntity> list = Arrays.asList(currentUser, selectedUser);
+                        emitter.onSuccess(mUserEntityDataMapper.transformUsers(list));
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.d("ErrorDataLayer", "Данные пользователя не выгружены с базы данных");
-                    }
-                });
-    }
 
+                    }
+                }));
+    }
+    /**
+     * Set image for current user. Add it to storage.
+     * @param uri - uri of image.
+     */
     @Override
-    public void setUserImage(final ProfileRepository.ImageCallBack callback, final String uri, final String uid) {
+    public void setUserImage(final String uri) {
         MyFirebaseData.getFirebaseStorage()
                 .child(MyFirebaseData.getFirebaseUserUid())
                 .putFile(Uri.parse(uri));
     }
-
+    /**
+     * Get image of selected user from storage
+     * @param uid - uid of selected user.
+     */
     @Override
-    public void getUserImage(final ProfileRepository.ImageCallBack callback, String uid) {
-        MyFirebaseData.getFirebaseStorage()
-                .child(uid)
-                .getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        callback.onImageLoaded(uri.toString());
-                    }
-                });
+    public Single<String> getUserImage(String uid) {
+        return Single.create(emitter -> {
+            MyFirebaseData.getFirebaseStorage()
+                    .child(uid)
+                    .getDownloadUrl()
+                    .addOnSuccessListener(uri -> emitter.onSuccess(uri.toString()));
+        });
     }
 }

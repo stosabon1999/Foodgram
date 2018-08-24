@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
+
 </resources>

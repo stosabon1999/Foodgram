@@ -2,8 +2,14 @@ package ru.production.ssobolevsky.foodgram.presentation.presenters;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import ru.production.ssobolevsky.foodgram.data.repositories.GetFriendsRepositoryImpl;
 import ru.production.ssobolevsky.foodgram.domain.models.User;
 import ru.production.ssobolevsky.foodgram.domain.usecases.GetFriendsUseCase;
+import ru.production.ssobolevsky.foodgram.domain.usecases.impl.GetFriendsUseCaseImpl;
 import ru.production.ssobolevsky.foodgram.presentation.activities.FriendsView;
 import ru.production.ssobolevsky.foodgram.presentation.presenters.base.BasePresenter;
 
@@ -13,33 +19,48 @@ import ru.production.ssobolevsky.foodgram.presentation.presenters.base.BasePrese
 
 public class FriendsPresenter extends BasePresenter<FriendsView> {
 
-    private FriendsView mView;
     private GetFriendsUseCase mUseCase;
-    private GetFriendsUseCase.CallBack mCallBack = new GetFriendsUseCase.CallBack() {
-        @Override
-        public void onUsersFounded(List<User> users) {
-            mView.showFoundedUsers(users);
-        }
 
-        @Override
-        public void onError() {
-
-        }
-    };
-
-
-    public void attachView(FriendsView view, GetFriendsUseCase useCase) {
-        mView  = view;
+    public FriendsPresenter(GetFriendsUseCase useCase) {
         mUseCase = useCase;
     }
-    
-    public void detachView() {
-        mView = null;
-        mUseCase = null;
+
+    /**
+     * Search users by input text and show it.{@link FriendsView#showFriends(List)}
+     * @param name - input text.
+     */
+    public void searchUserByName(String name) {
+        getMvpView().showProgress();
+        mUseCase.searchUserByName(name)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(users -> {
+                    if (users.size() == 0) {
+                        getMvpView().showEmptyFriendsText();
+                    } else {
+                        getMvpView().showFriends(users);
+                    }
+                    getMvpView().hideProgress();
+                });
     }
 
-    public void searchUserByName(String name) {
-        mUseCase.searchUserByName(mCallBack, name);
+    /**
+     * Get friends of selected user by uid and show it. {@link FriendsView#showFriends(List)}
+     * @param uid - uid of user.
+     */
+    public void getFriends(String uid) {
+        getMvpView().showProgress();
+        mUseCase.getFriends(uid)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(users -> {
+                    if (users.size() == 0) {
+                        getMvpView().showEmptyFriendsText();
+                    } else {
+                        getMvpView().showFriends(users);
+                    }
+                    getMvpView().hideProgress();
+                });
     }
 
 }

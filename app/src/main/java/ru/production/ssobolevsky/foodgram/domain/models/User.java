@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 public class User {
 
+
     private String mEmail;
 
     private String mName;
@@ -15,6 +16,10 @@ public class User {
     private String mUid;
 
     private HashMap<String, Boolean> contacts;
+
+    private int action;
+
+    private int friendSize;
 
     public HashMap<String, Boolean> getContacts() {
         return contacts;
@@ -32,6 +37,7 @@ public class User {
         mName = name;
         mUid = uid;
         this.contacts = contacts;
+        action = 1;
     }
 
     public String getEmail() {
@@ -56,6 +62,22 @@ public class User {
 
     public void setUid(String uid) {
         mUid = uid;
+    }
+
+    public int getAction() {
+        return action;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
+    }
+
+    public int getFriendSize() {
+        return friendSize;
+    }
+
+    public void setFriendSize(int friendSize) {
+        this.friendSize = friendSize;
     }
 
 }

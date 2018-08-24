@@ -1,4 +1,6 @@
-package ru.production.ssobolevsky.foodgram.presentation;
+package ru.production.ssobolevsky.foodgram.presentation.activities;
 
-public class FullScreenView {
+public interface FullScreenView {
+
+    void loadImage(String uri);
 }

@@ -1,6 +1,5 @@
 package ru.production.ssobolevsky.foodgram.presentation.fragments;
 
-import ru.production.ssobolevsky.foodgram.data.models.UserEntity;
 import ru.production.ssobolevsky.foodgram.domain.models.User;
 
 /**
@@ -9,7 +8,7 @@ import ru.production.ssobolevsky.foodgram.domain.models.User;
 
 public interface ProfileView {
 
-    void showButtonSend();
+    void showButtonDelete();
 
     void showButtonEdit();
 
@@ -18,8 +17,18 @@ public interface ProfileView {
     void showButtonCancel();
 
     void showButtonAdd();
-
+    /**
+     * Method to show user data by {@param user}.
+     * @param user - user.
+     */
     void showUserData(User user);
-
+    /**
+     * Method to show user image by {@param uri}.
+     * @param uri - uri of image.
+     */
     void loadImage(String uri);
+
+    void showProgress();
+
+    void hideProgress();
 }

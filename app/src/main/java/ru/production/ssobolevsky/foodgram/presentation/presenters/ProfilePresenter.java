@@ -1,14 +1,18 @@
-package ru.production.ssobolevsky.foodgram.presentation.fragments;
+package ru.production.ssobolevsky.foodgram.presentation.presenters;
 
 import android.net.Uri;
+import android.util.Log;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import ru.production.ssobolevsky.foodgram.data.datasources.MyFirebaseData;
 import ru.production.ssobolevsky.foodgram.data.repositories.AddUserRepositoryImpl;
 import ru.production.ssobolevsky.foodgram.domain.models.User;
 import ru.production.ssobolevsky.foodgram.domain.usecases.AddUserUseCase;
 import ru.production.ssobolevsky.foodgram.domain.usecases.GetUserDataUseCase;
 import ru.production.ssobolevsky.foodgram.domain.util.ActionButtons;
+import ru.production.ssobolevsky.foodgram.presentation.activities.MainActivity;
+import ru.production.ssobolevsky.foodgram.presentation.fragments.ProfileView;
 import ru.production.ssobolevsky.foodgram.presentation.presenters.base.BasePresenter;
 
 /**
@@ -112,11 +116,12 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
         }
     }
 
-    public void addUserImage(Uri selectedImage, String uid) {
-        mGetUserDataUseCase.setUserImage(selectedImage.toString(), uid);
+    public void addUserImage(Uri selectedImage) {
+        mGetUserDataUseCase.setUserImage(selectedImage.toString());
     }
 
     public void getUserImage(String uid) {
+
         mGetUserDataUseCase.getUserImage(uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

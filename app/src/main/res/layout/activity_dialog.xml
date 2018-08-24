@@ -7,4 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".presentation.activities.DialogActivity">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_messages"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_messages"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_messages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_messages">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <ProgressBar
+        android:id="@+id/pb_dialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_messages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_messages"
+        android:visibility="gone"/>
+
+    <LinearLayout
+    android:id="@+id/ll_messages"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:minHeight="48dp"
+    android:background="#ffffff"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent">
+
+    <EditText
+        android:id="@+id/et_messages"
+        android:hint="@string/type_message"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:maxLines="6"/>
+
+    <ImageButton
+        android:id="@+id/ib_messages"
+        android:src="@drawable/ic_input_black_24dp"
+        android:textSize="@dimen/standard_text_size"
+        android:layout_width="64dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:background="@null"/>
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

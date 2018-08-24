@@ -12,21 +12,23 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Maybe;
-import io.reactivex.MaybeEmitter;
-import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import ru.production.ssobolevsky.foodgram.data.datasources.MyFirebaseData;
 import ru.production.ssobolevsky.foodgram.data.mapper.MessageEntityDataMapper;
 import ru.production.ssobolevsky.foodgram.data.models.ChatEntity;
 import ru.production.ssobolevsky.foodgram.data.models.MessageEntity;
-import ru.production.ssobolevsky.foodgram.domain.models.Chat;
 import ru.production.ssobolevsky.foodgram.domain.models.Message;
-import ru.production.ssobolevsky.foodgram.domain.repositories.DialogRepository;
+import ru.production.ssobolevsky.foodgram.domain.repositories.ChatRepository;
 
-public class DialogRepositoryImpl implements DialogRepository {
+import static ru.production.ssobolevsky.foodgram.data.datasources.MyFirebaseData.MAX_MESSAGES;
 
+public class ChatRepositoryImpl implements ChatRepository {
+    /**
+     * Send message to user by user id. Add message to database and update data of current chat.
+     * @param message - new message.
+     * @param selectedUid - uid of selected user.
+     */
     @Override
     public void sendMessageByUserUid(String message, String selectedUid) {
         MyFirebaseData.getFirebaseDatabaseReference()
@@ -62,7 +64,11 @@ public class DialogRepositoryImpl implements DialogRepository {
         });
 
     }
-
+    /**
+     * Send message to user by chat uid. Add message to database and update data of current chat.
+     * @param message - new message.
+     * @param chatUid - uid of selected chat.
+     */
     @Override
     public void sendMessageByChatUid(String message, String chatUid) {
         MyFirebaseData.getFirebaseDatabaseReference()
@@ -86,7 +92,10 @@ public class DialogRepositoryImpl implements DialogRepository {
                     }
                 });
     }
-
+    /**
+     * Get chats of current user from database.
+     * @return list of chats
+     */
     @Override
     public Single<List<ChatEntity>> getChats() {
         return Single.create(emitter -> MyFirebaseData.getFirebaseDatabaseReference()
@@ -113,47 +122,25 @@ public class DialogRepositoryImpl implements DialogRepository {
                     }
                 }));
     }
-
+    /**
+     * Get chat with user by user uid from database.
+     * @param userUid - uid of selected user.
+     * @return list of messages between current user and selected user.
+     */
     @Override
-    public Single<List<Message>> getDialogByUserId(String userUid) {
-        return Single.create(emitter -> MyFirebaseData.getFirebaseDatabaseReference()
-        .child(MyFirebaseData.MESSAGES_TABLE)
-        .orderByChild("timestamp")
-        .limitToLast(10)
-        .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<MessageEntity> list = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if ((snapshot.child("senderUid").getValue().equals(MyFirebaseData.getFirebaseUserUid())
-                    && snapshot.child("receiverUid").getValue().equals(userUid))
-                    ||(snapshot.child("receiverUid").getValue().equals(MyFirebaseData.getFirebaseUserUid())
-                            && snapshot.child("senderUid").getValue().equals(userUid))) {
-                        list.add(snapshot.getValue(MessageEntity.class));
-                    }
-                }
-                emitter.onSuccess(new MessageEntityDataMapper().transformMessages(list));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        }));
-    }
-
-    @Override
-    public Single<List<Message>> getDialogByChatId(String chatUid) {
+    public Single<List<Message>> getDialogByUserId(String userUid, Long lastItem) {
         return Single.create(emitter -> MyFirebaseData.getFirebaseDatabaseReference()
                 .child(MyFirebaseData.MESSAGES_TABLE)
                 .orderByChild("timestamp")
-                .limitToLast(10)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<MessageEntity> list = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            if (snapshot.child("uid").getValue().equals(chatUid)) {
+                            if ((snapshot.child("senderUid").getValue().equals(MyFirebaseData.getFirebaseUserUid())
+                                    && snapshot.child("receiverUid").getValue().equals(userUid))
+                                    ||(snapshot.child("receiverUid").getValue().equals(MyFirebaseData.getFirebaseUserUid())
+                                    && snapshot.child("senderUid").getValue().equals(userUid))) {
                                 list.add(snapshot.getValue(MessageEntity.class));
                             }
                         }
@@ -165,6 +152,35 @@ public class DialogRepositoryImpl implements DialogRepository {
 
                     }
                 }));
+    }
+    /**
+     * Get chat with user by chat uid from database.
+     * @param chatUid - uid of chat.
+     * @return list of messages between current user and selected user.
+     */
+    @Override
+    public Single<List<Message>> getDialogByChatId(String chatUid, Long lastItem) {
+     return Single.create(emitter -> MyFirebaseData.getFirebaseDatabaseReference()
+             .child(MyFirebaseData.MESSAGES_TABLE)
+             .orderByChild("timestamp")
+             .addListenerForSingleValueEvent(new ValueEventListener() {
+                 @Override
+                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                     List<MessageEntity> list = new ArrayList<>();
+                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                         if (snapshot.child("uid").getValue().equals(chatUid)) {
+                             MessageEntity messageEntity = snapshot.getValue(MessageEntity.class);
+                             list.add(messageEntity);
+                         }
+                     }
+                     emitter.onSuccess(new MessageEntityDataMapper().transformMessages(list));
+                 }
+
+                 @Override
+                 public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                 }
+             }));
     }
 
     /**
@@ -230,7 +246,6 @@ public class DialogRepositoryImpl implements DialogRepository {
                 .child(MyFirebaseData.CHATS_TABLE)
                 .child(chatRef.getKey())
                 .setValue(chat);
-
         return chat;
     }
 
@@ -240,14 +255,14 @@ public class DialogRepositoryImpl implements DialogRepository {
      * @param message - new message.
      */
     private void pushMessage(ChatEntity chat, String message) {
-        MyFirebaseData.getFirebaseDatabaseReference()
+        DatabaseReference reference = MyFirebaseData.getFirebaseDatabaseReference()
                 .child(MyFirebaseData.MESSAGES_TABLE)
-                .push()
-                .setValue(new MessageEntity(message,
-                        chat.getUid(),
-                        new Timestamp(System.currentTimeMillis()).getTime(),
-                        MyFirebaseData.getFirebaseUserUid(),
-                        chat.getSelectedUserUid()));
+                .push();
+        reference.setValue(new MessageEntity(message,
+                chat.getUid(),
+                new Timestamp(System.currentTimeMillis()).getTime(),
+                MyFirebaseData.getFirebaseUserUid(),
+                chat.getSelectedUserUid(), reference.getKey()));
     }
 }
 

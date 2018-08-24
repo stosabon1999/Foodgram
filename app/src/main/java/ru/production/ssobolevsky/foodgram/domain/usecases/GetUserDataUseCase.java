@@ -1,7 +1,7 @@
 package ru.production.ssobolevsky.foodgram.domain.usecases;
 
 
-import ru.production.ssobolevsky.foodgram.data.models.UserEntity;
+import io.reactivex.Single;
 import ru.production.ssobolevsky.foodgram.domain.models.User;
 
 /**
@@ -9,19 +9,21 @@ import ru.production.ssobolevsky.foodgram.domain.models.User;
  */
 
 public interface GetUserDataUseCase {
-
-    void getUserData(GetUserDataUseCase.Callback callback, String uid);
-    void setUserImage(String uri, String uid);
-    void getUserImage(GetUserDataUseCase.ImageCallback callback, String uid);
-
-    interface Callback {
-        void onUserDataLoaded(User user, int action);
-        void onError();
-    }
-
-    interface ImageCallback {
-        void onImageLoaded(String uri);
-        void onError();
-    }
+    /**
+     * Get full user data by user uid.
+     * @param uid - uid of selected user.
+     * @return list of two users.(current and selected)
+     */
+    Single<User> getUserData(String uid);
+    /**
+     * Set image for current user.
+     * @param uri - uri of image.
+     */
+    void setUserImage(String uri);
+    /**
+     * Get image of selected user.
+     * @param uid - uid of selected user.
+     */
+    Single<String> getUserImage(String uid);
 
 }

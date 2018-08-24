@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +18,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ru.production.ssobolevsky.foodgram.R;
+import ru.production.ssobolevsky.foodgram.data.datasources.MyFirebaseData;
 
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivityTag";
     public static final int REQUEST_CODE_REGISTER = 1001;
 
-    private FirebaseAuth mAuth;
-    private ImageView mLogo;
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
     private Button mLoginButton;
@@ -42,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void init() {
-        mAuth = FirebaseAuth.getInstance();
-        mLogo = findViewById(R.id.iv_logo);
         mEmailEditText = findViewById(R.id.et_email);
         mPasswordEditText = findViewById(R.id.et_password);
         mLoginButton = findViewById(R.id.b_login);
@@ -55,32 +51,44 @@ public class LoginActivity extends AppCompatActivity {
         mCreateAccountTextView.setOnClickListener(new RegisterButtonClickListener());
     }
 
-
+    /**
+     * Method to sign in with {@param email} and {@param password}.
+     * If task is successful then {@link MainActivity} starts else toast shows.
+     * @param email - email.
+     * @param password - password.
+     */
     private void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Заполните все поля",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            MyFirebaseData.getAuth().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            startActivity(MainActivity.newIntent(LoginActivity.this, mAuth.getCurrentUser().getUid()));
+                            startActivity(MainActivity.newIntent(LoginActivity.this, MyFirebaseData.getFirebaseUserUid()));
                             finish();
                         } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Введите корректные данные",
                                     Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        }
     }
 
+    /**
+     * Class to listen {@link #mLoginButton} clicks.
+     * If clicked then user sign in. {@link #signIn}.
+     */
     private class LoginButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             signIn(mEmailEditText.getText().toString(), mPasswordEditText.getText().toString());
         }
     }
-
+    /**
+     * Class to listen {@link #mCreateAccountTextView}  clicks.
+     * If clicked then sign up activity starts. {@link SignUpActivity}.
+     */
     private class RegisterButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -91,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_REGISTER && resultCode == RESULT_OK) {
-            startActivity(MainActivity.newIntent(LoginActivity.this, mAuth.getCurrentUser().getUid()));
+            startActivity(MainActivity.newIntent(LoginActivity.this, MyFirebaseData.getFirebaseUserUid()));
             finish();
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -100,5 +108,10 @@ public class LoginActivity extends AppCompatActivity {
     public static Intent newInstance(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
         return intent;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
