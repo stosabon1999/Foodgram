@@ -13,8 +13,10 @@ import ru.production.ssobolevsky.foodgram.domain.util.ActionButtons;
 public class GetUserDataUseCaseImpl implements GetUserDataUseCase {
 
     private ProfileRepository mProfileRepository;
-
-
+    
+    public GetUserDataUseCaseImpl(ProfileRepository profileRepository) {
+        mProfileRepository = profileRepository;
+    }
 
     private User getUserState(User currentUser, User selectedUser) {
         int action = 1;
@@ -38,11 +40,6 @@ public class GetUserDataUseCaseImpl implements GetUserDataUseCase {
             selectedUser.setAction(ActionButtons.ACTION_DELETE);
         }
         return selectedUser;
-    }
-
-
-    public GetUserDataUseCaseImpl(ProfileRepository profileRepository) {
-        mProfileRepository = profileRepository;
     }
 
     @Override
