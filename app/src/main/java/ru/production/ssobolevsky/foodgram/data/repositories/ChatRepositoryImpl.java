@@ -49,6 +49,7 @@ public class ChatRepositoryImpl implements ChatRepository {
                     }
                 }
                 if (chatExists) {
+                    Log.wtf("LOL", selectedUid);
                     updateChat(currentChat, message, selectedUid);
                     pushMessage(currentChat, message);
                 } else {
@@ -141,7 +142,8 @@ public class ChatRepositoryImpl implements ChatRepository {
                                     && snapshot.child("receiverUid").getValue().equals(userUid))
                                     ||(snapshot.child("receiverUid").getValue().equals(MyFirebaseData.getFirebaseUserUid())
                                     && snapshot.child("senderUid").getValue().equals(userUid))) {
-                                list.add(snapshot.getValue(MessageEntity.class));
+                                MessageEntity messageEntity = snapshot.getValue(MessageEntity.class);
+                                list.add(messageEntity);
                             }
                         }
                         emitter.onSuccess(new MessageEntityDataMapper().transformMessages(list));

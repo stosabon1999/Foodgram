@@ -1,5 +1,7 @@
 package ru.production.ssobolevsky.foodgram.presentation.presenters;
 
+import android.util.Log;
+
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

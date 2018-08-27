@@ -13,7 +13,7 @@ import ru.production.ssobolevsky.foodgram.domain.util.ActionButtons;
 public class GetUserDataUseCaseImpl implements GetUserDataUseCase {
 
     private ProfileRepository mProfileRepository;
-    
+
     public GetUserDataUseCaseImpl(ProfileRepository profileRepository) {
         mProfileRepository = profileRepository;
     }

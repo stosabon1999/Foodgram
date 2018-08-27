@@ -43,25 +43,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkUser();
         init();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    private void init() {
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Bundle bundle = new Bundle();
-        if (getIntent().getStringExtra(UID) == null) {
-            bundle.putString(UID, MyFirebaseData.getFirebaseUserUid());
-        } else {
-            bundle.putString(UID, getIntent().getStringExtra(UID));
-        }
-        loadFragment(ProfileFragment.newInstance(bundle));
     }
 
     /**
@@ -75,15 +62,20 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    /**
-     * Method to check is user logged in.
-     * If user is logged then load profile fragment {@link ProfileFragment}.
-     * If user isn't logged in then return to login activity {@link LoginActivity}.
-     */
-    private void checkUser() {
+    private void init() {
         if (MyFirebaseData.getFirebaseUser() == null) {
             startActivity(LoginActivity.newInstance(MainActivity.this));
             finish();
+        } else {
+            BottomNavigationView navigation = findViewById(R.id.navigation);
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            Bundle bundle = new Bundle();
+            if (getIntent().getStringExtra(UID) == null) {
+                bundle.putString(UID, MyFirebaseData.getFirebaseUserUid());
+            } else {
+                bundle.putString(UID, getIntent().getStringExtra(UID));
+            }
+            loadFragment(ProfileFragment.newInstance(bundle));
         }
     }
 
